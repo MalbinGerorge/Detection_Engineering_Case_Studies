@@ -1,0 +1,29 @@
+title: Suspicious Command Execution as Root
+id: linux-root-command-execution
+status: experimental
+description: Detects suspicious commands executed with elevated privileges
+author: Malbin George
+
+logsource:
+  product: linux
+  category: process_creation
+
+detection:
+  selection:
+    CommandLine|contains:
+      - 'sudo'
+      - 'wget'
+      - 'curl'
+      - '/tmp/'
+      - 'chmod 777'
+
+  condition: selection
+
+falsepositives:
+  - Admin activity
+
+level: medium
+
+tags:
+  - attack.privilege_escalation
+  - attack.execution
