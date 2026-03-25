@@ -1,0 +1,28 @@
+title: Clipboard Collection via Xclip
+id: linux-xclip-clipboard
+status: experimental
+description: Detects clipboard access using xclip
+author: Malbin George
+
+logsource:
+  product: linux
+  category: process_creation
+
+detection:
+  selection:
+    CommandLine|contains:
+      - 'xclip'
+      - '-o'
+      - '-selection'
+      - 'clipboard'
+
+  condition: selection
+
+falsepositives:
+  - User clipboard usage
+
+level: low
+
+tags:
+  - attack.collection
+  - attack.t1115
