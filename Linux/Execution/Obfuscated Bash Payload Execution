@@ -1,0 +1,32 @@
+title: Obfuscated Bash Payload Execution
+id: linux-obfuscated-bash
+status: experimental
+description: Detects possible obfuscated bash execution using encoding and suspicious utilities
+author: Malbin George
+
+logsource:
+  product: linux
+  category: process_creation
+
+detection:
+  selection:
+    CommandLine|contains:
+      - 'base64'
+      - 'eval'
+      - 'xxd'
+      - 'bash -c'
+      - '/tmp/'
+      - 'curl'
+      - 'wget'
+
+  condition: selection
+
+falsepositives:
+  - Admin scripts
+  - Automation tools
+
+level: medium
+
+tags:
+  - attack.execution
+  - attack.t1059
