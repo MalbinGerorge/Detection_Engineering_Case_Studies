@@ -1,0 +1,30 @@
+title: SSH Configuration File Modification
+id: linux-ssh-config-modification
+status: experimental
+description: Detects modification of sshd_config file
+author: Malbin George
+
+logsource:
+  product: linux
+  category: process_creation
+
+detection:
+  selection:
+    CommandLine|contains:
+      - '/etc/ssh/sshd_config'
+      - 'vi'
+      - 'vim'
+      - 'nano'
+      - 'echo'
+      - 'tee'
+
+  condition: selection
+
+falsepositives:
+  - Admin configuration changes
+
+level: high
+
+tags:
+  - attack.persistence
+  - attack.t1098
