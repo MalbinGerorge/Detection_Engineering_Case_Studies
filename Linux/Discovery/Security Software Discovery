@@ -1,0 +1,39 @@
+title: Security Software Discovery on Linux
+id: linux-security-software-discovery
+status: experimental
+description: Detects enumeration of security tools/services
+author: Malbin George
+
+logsource:
+  product: linux
+  category: process_creation
+
+detection:
+  selection_tools:
+    CommandLine|contains:
+      - 'ps'
+      - 'pgrep'
+      - 'systemctl'
+      - 'service'
+      - 'top'
+      - 'cat /etc/init.d'
+
+  selection_targets:
+    CommandLine|contains:
+      - 'falcon'
+      - 'nessus'
+      - 'cbagentd'
+      - 'filebeat'
+      - 'auditbeat'
+      - 'osquery'
+
+  condition: selection_tools and selection_targets
+
+falsepositives:
+  - Admin monitoring
+
+level: medium
+
+tags:
+  - attack.discovery
+  - attack.t1518
