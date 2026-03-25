@@ -1,0 +1,37 @@
+title: Credential File Copy to Temporary Directory
+id: linux-passwd-shadow-tmp
+status: experimental
+description: Detects copying or staging of passwd/shadow files into /tmp
+author: Malbin George
+
+logsource:
+  product: linux
+  category: process_creation
+
+detection:
+  selection_cmd:
+    CommandLine|contains:
+      - 'cp'
+      - 'scp'
+      - 'cat'
+      - 'tar'
+
+  selection_sensitive:
+    CommandLine|contains:
+      - '/etc/passwd'
+      - '/etc/shadow'
+
+  selection_tmp:
+    CommandLine|contains:
+      - '/tmp/'
+
+  condition: selection_cmd and selection_sensitive and selection_tmp
+
+falsepositives:
+  - Backup scripts
+
+level: high
+
+tags:
+  - attack.credential_access
+  - attack.t1003
