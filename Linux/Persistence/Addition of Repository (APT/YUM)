@@ -1,0 +1,28 @@
+title: Linux Repository Modification
+id: linux-repo-modification
+status: experimental
+description: Detects addition or modification of package repositories
+author: Malbin George
+
+logsource:
+  product: linux
+  category: process_creation
+
+detection:
+  selection:
+    CommandLine|contains:
+      - 'add-apt-repository'
+      - 'yum-config-manager'
+      - 'dnf config-manager'
+      - '/etc/apt/sources.list'
+      - '/etc/yum.repos.d/'
+
+  condition: selection
+
+falsepositives:
+  - Legitimate package installation
+
+level: medium
+
+tags:
+  - attack.persistence
